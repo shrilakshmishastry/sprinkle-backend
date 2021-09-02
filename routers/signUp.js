@@ -4,35 +4,73 @@ const UserModel = require("../db/schema/user");
 
 
 Router.post('/', async(req, res) => {
-
+    console.log(req.body);
     const {
         name,
         email,
         password,
-        phone_number,
+        phoneNumber,
         address
-    } = req.body;
-    const _id = email;
+    } = req.body.data;
+
+    const phone_number = phoneNumber;
 
     const hashed_password = jwt.sign({password},process.env.SECRET_KEY);
+    console.log();
+    const token = jwt.sign({email},process.env.SECRET_KEY);
 
-    const token = jwt.sign({_id},process.env.SECRET_KEY);
-
-    console.log(name,email,hashed_password,address,_id,phone_number);
+    console.log(name,email,hashed_password,address,phone_number);
 
     try{
-        const user = new UserModel({
+        const emailExist =await UserModel.findOne({email});
+        if(emailExist){
+            res.json({status:204,message:"User exist"});
+        }else{
+             const user = new UserModel({
             name,
             phone_number,
-            _id,
+            email,
             hashed_password,
             address
         });
-        await  user.save();
-        res.json({status:"success",accessToken:token});
+        
+        const result = await  user.save();
+        console.log(result);
+        res.json({status:200,accessToken:token});
+        }
+
     }catch(e){
-        console.log(e);
-        res.json({status:"Error",message:"Email already taken"});
+        let message = "";
+        if(e.errors){
+            const {
+                name,
+                phone_number,
+                _id,
+                hashed_password,
+                address
+            } = e.errors;
+            console.log(e.errors);
+            if(name){
+                message  = `${message}${name.message}`;
+            }
+            if(phone_number){
+                message = `${message}${phone_number.message}`;
+            }
+            if(_id){
+                message = `${message}${_id.message}`;
+            }
+            if(hashed_password){
+                message =  `${message}${hashed_password.message}`;
+            }
+            if(address){
+                message = `${message}${address.message}`;
+            }
+
+        }
+        else{
+            message = "Email already taken"
+        }
+        res.json({message:message,status:204});
     }
 
 })

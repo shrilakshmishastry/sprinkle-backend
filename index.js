@@ -9,6 +9,11 @@ const mongoose = require('mongoose');
 
 const LoginRouter = require('./routers/login');
 const SignUpRouter = require('./routers/signUp');
+const ProductsRouter = require('./routers/products');
+const TopProductsRouter = require('./routers/top-products');
+const UserRouter = require('./routers/users');
+const OrderRouter = require('./routers/orders');
+const PaymentRouter = require('./routers/payments');
 
 
 const app = express();
@@ -41,6 +46,11 @@ try{
 
 app.use("/login",LoginRouter);
 app.use("/signup",SignUpRouter);
+app.use("/products",ProductsRouter);
+app.use("/top-products",TopProductsRouter);
+app.use("/user-info",UserRouter);
+app.use("/order-summary",OrderRouter);
+app.use("/payments",PaymentRouter)
 
 app.get("/",(req,res)=>{
         // UserModel.find((err,data)=>{
@@ -55,10 +65,13 @@ app.get("/",(req,res)=>{
         //     console.log(err);
         //     console.log(data);
         // })
-        // ProductModel.find((err,data)=>{
-        //     console.log(err);
-        //     console.log(data);
-        // })
+        ProductModel.find((err,data)=>{
+            console.log(err);
+            console.log(data);
+            data[0].skus.map((val)=>{
+                console.log(val);
+            })
+        })
 
     res.send('Hello world');
 })

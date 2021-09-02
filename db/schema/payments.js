@@ -1,10 +1,19 @@
 const {Schema,model} = require('mongoose');
+const UserModel = require('./user');
 
 const PaymentSchema = new Schema({
-    _id:String,
-    user_id:String,
-    payment_method: String,
-    order_id:String
+     user_id: {
+        type: String,
+        required: true
+    },
+    transcation_id:{
+        type: String,
+    },
+    payment_method: {
+        type:    String,
+        required: true
+    },
+    order_id:Schema.ObjectId
 });
 
 const PaymentModel = model("payments",PaymentSchema,"payments");
