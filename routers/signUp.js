@@ -4,7 +4,7 @@ const UserModel = require("../db/schema/user");
 
 
 Router.post('/', async(req, res) => {
-    console.log(req.body);
+
     const {
         name,
         email,
@@ -16,15 +16,16 @@ Router.post('/', async(req, res) => {
     const phone_number = phoneNumber;
 
     const hashed_password = jwt.sign({password},process.env.SECRET_KEY);
-    console.log();
+   
+
     const token = jwt.sign({email},process.env.SECRET_KEY);
 
-    console.log(name,email,hashed_password,address,phone_number);
+
 
     try{
         const emailExist =await UserModel.findOne({email});
         if(emailExist){
-            res.json({status:204,message:"User exist"});
+            res.status(500).json({message:"User exist"});
         }else{
              const user = new UserModel({
             name,
@@ -33,10 +34,10 @@ Router.post('/', async(req, res) => {
             hashed_password,
             address
         });
-        
+
         const result = await  user.save();
-        console.log(result);
-        res.json({status:200,accessToken:token});
+
+        res.status(200).json({accessToken:token});
         }
 
     }catch(e){
@@ -49,7 +50,7 @@ Router.post('/', async(req, res) => {
                 hashed_password,
                 address
             } = e.errors;
-            console.log(e.errors);
+
             if(name){
                 message  = `${message}${name.message}`;
             }
@@ -70,7 +71,7 @@ Router.post('/', async(req, res) => {
         else{
             message = "Email already taken"
         }
-        res.json({message:message,status:204});
+        res.status(500).json({message});
     }
 
 })

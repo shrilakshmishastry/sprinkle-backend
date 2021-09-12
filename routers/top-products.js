@@ -16,7 +16,7 @@ Router.get("/",(req,res)=>{
 
                   }
               }
-              console.log(items);
+              
               res.json(items);
           }
 

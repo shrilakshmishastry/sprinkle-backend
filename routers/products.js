@@ -17,7 +17,6 @@ Router.get("/",(req,res)=>{
                         items.push(data[i].skus[j]);
                }
             }
-            console.log(items);
                res.json(items);
            }else{
             res.json(err);
@@ -32,7 +31,7 @@ Router.get("/",(req,res)=>{
 // router to get all products
 
 Router.get("/all-products",(req,res)=>{
-    console.log("hello");
+
     try{
         ProductModel.find((err,data)=>{
            if(!err){
@@ -52,23 +51,22 @@ Router.get("/all-products",(req,res)=>{
 // router to delete an entire product
 Router.delete("/remove/:id",async(req,res)=>{
     const {authorization} = req.headers;
-    console.log("hello");
+
     try{
         const decoded = jwt.verify(authorization,process.env.SECRET_KEY);
-        const {_id}  = decoded;
-        const user_id = _id;
-        const user = await UserModel.findOne({user_id});
+        const {email}  = decoded;
+
+        const user = await UserModel.findOne({email});
         if(user){
-            console.log(req.params);
+
             const _id = req.params.id;
-            console.log(_id);
+
             const product = await ProductModel.findOneAndDelete({_id});
-            console.log(product);
-            console.log("cudee");
+
             res.json("success");
         }
     }catch(e){
-        console.log("err");
+
         res.json(e);
     }
 })
@@ -78,9 +76,8 @@ Router.delete("/:id",async(req,res)=>{
     const {authorization} = req.headers;
     try{
         const decoded = jwt.verify(authorization,process.env.SECRET_KEY);
-        const {_id}  = decoded;
-        const user_id = _id;
-        const user = await UserModel.findOne({user_id});
+        const {email}  = decoded;
+        const user = await UserModel.findOne({email});
         if(user){
             const {id} = req.params;
 
@@ -109,13 +106,13 @@ Router.delete("/:id",async(req,res)=>{
             },{
                 new : true
             });
-            console.log(result);
+
            }
 
         }
         res.json("success");
     }catch(e){
-        console.log(e);
+
         res.json(e.message);
     }
 

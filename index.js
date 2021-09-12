@@ -14,6 +14,7 @@ const TopProductsRouter = require('./routers/top-products');
 const UserRouter = require('./routers/users');
 const OrderRouter = require('./routers/orders');
 const PaymentRouter = require('./routers/payments');
+const CartRouter = require('./routers/cart');
 
 
 const app = express();
@@ -38,11 +39,7 @@ try{
 }catch(e){
     console.log(e);
 }
-// try{
-//     connectDb();
-// }catch(e){
-//     console.log(e);
-// }
+
 
 app.use("/login",LoginRouter);
 app.use("/signup",SignUpRouter);
@@ -51,28 +48,10 @@ app.use("/top-products",TopProductsRouter);
 app.use("/user-info",UserRouter);
 app.use("/order-summary",OrderRouter);
 app.use("/payments",PaymentRouter)
+app.use("/cart",CartRouter);
+
 
 app.get("/",(req,res)=>{
-        // UserModel.find((err,data)=>{
-        //     console.log(err);
-        //     console.log(data);
-        // });
-        // OrderModel.find((err,data)=>{
-        //     console.log(err);
-        //     console.log(data);
-        // })
-        // PaymentModel.find((err,data)=>{
-        //     console.log(err);
-        //     console.log(data);
-        // })
-        ProductModel.find((err,data)=>{
-            console.log(err);
-            console.log(data);
-            data[0].skus.map((val)=>{
-                console.log(val);
-            })
-        })
-
     res.send('Hello world');
 })
 

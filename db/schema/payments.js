@@ -1,5 +1,5 @@
 const {Schema,model} = require('mongoose');
-const UserModel = require('./user');
+
 
 const PaymentSchema = new Schema({
      user_id: {

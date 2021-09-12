@@ -1,13 +1,10 @@
-const {Schema,model,mongo} = require('mongoose');
+const {Schema,model,mongo,Types} = require('mongoose');
 const UserModel = require('../schema/user');
 const AddressSchema = require('./address');
 const SkuSchema = require('./skus');
 
 const OrderSchema = new Schema({
-      user_id: {
-        type: String,
-        required: true
-    },
+      user_id: Types.ObjectId,
     payment_status:{
         type: String,
         required: true
