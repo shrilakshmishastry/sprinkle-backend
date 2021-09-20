@@ -7,6 +7,7 @@ const UserModel = require("../db/schema/user");
 // router to get only skus of all products
 
 Router.get("/",(req,res)=>{
+    console.log("shri");    
     try{
         ProductModel.find((err,data)=>{
            if(!err){

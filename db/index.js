@@ -1,8 +1,22 @@
+const mongoose = require('mongoose');
 
-    const mongoose = require('mongoose');
-    const dbName = "sprinkle";
-    const url = `mongodb://localhost:27017/${dbName}`;
+if(process.env.NODE_ENV === "production"){
+    require("dotenv").config({path:".prod.env"});
+}else{
+    require("dotenv").config();
+}
+
+    console.log(process.env.url);
+    const url = process.env.url;
     mongoose.connect(url);
+
+    mongoose.connection.on("errror",err=>{
+        console.log(err);
+    })
+mongoose.connection.on("connected",(err,res)=>{
+    console.log(res);
+    console.log("hello")
+})
 
 
 

@@ -30,8 +30,6 @@ const UserSchema = new Schema({
         required: true,
     },
     address:{
-        min:[3,'Must be at least 6,got {VALUE}'],
-        max:12,
         type: [ AddressSchema],
         required: true ,
     },
